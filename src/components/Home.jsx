@@ -1,13 +1,14 @@
-import Navigation from '../routes/Navigation';
+import Navigation from '../nav/Navigation';
 import React from 'react';
-
+import Gradient from './Gradient';
 
 const Home = () => {
   return (
-    <div className="relative overflow-hidden">
-      <Navigation />
+    <>
       <main>
-        <div className="bg-gray-900 pt-10 sm:pt-16 overflow-hidden lg:pt-8 lg:pb-14 h-screen">
+        <div className="relative isolate bg-gray-900 overflow-hidden h-screen border-none">
+          <Navigation />
+          <Gradient />
           <div className="mx-auto max-w-7xl lg:px-8">
             <div className="lg:grid lg:grid-cols-2 lg:gap-8">
               <div className="mx-auto max-w-md px-6 sm:max-w-2xl sm:text-center lg:flex lg:items-center lg:px-0 lg:text-left">
@@ -19,8 +20,12 @@ const Home = () => {
                     </span>
                   </h1>
                   <p className="text-base text-gray-300 sm:text-xl lg:text-lg xl:text-xl">
-                  Welcome to our all-in-one retail management solution that empowers businesses like yours to manage sales, inventory, and customer data all in one place. 
-                  Say goodbye to scattered data and inefficient systems, and hello to a streamlined, easy-to-use point of sale and inventory management system that simplifies your retail operations. 
+                    Welcome to our all-in-one retail management solution that
+                    empowers businesses like yours to manage sales, inventory,
+                    and customer data all in one place. Say goodbye to scattered
+                    data and inefficient systems, and hello to a streamlined,
+                    easy-to-use point of sale and inventory management system
+                    that simplifies your retail operations.
                   </p>
                   <div className="mt-10 sm:mt-12">
                     <form action="#" className="sm:mx-auto sm:max-w-xl lg:mx-0">
@@ -71,7 +76,7 @@ const Home = () => {
           </div>
         </div>
       </main>
-    </div>
+    </>
   );
 };
 

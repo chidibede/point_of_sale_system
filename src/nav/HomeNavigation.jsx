@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function HomeNavigation() {
   return (
-    <div className="flex w-full items-center justify-between md:w-auto ml-16 mt-6">
+    <div className="bg-gray-900 flex w-full items-center justify-between md:w-auto ml-16 mt-6">
       <Link to="/">
         <div className="flex flex-row">
           <span className="sr-only">Nextrend</span>

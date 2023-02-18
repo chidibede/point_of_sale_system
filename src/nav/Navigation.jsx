@@ -1,20 +1,24 @@
+import Gradient from '../components/Gradient';
 import { Popover, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 const navigation = [
-  { name: 'How it works', href: '/how-it-works' },
-  { name: 'Demo', href: '/demo' },
+  { name: 'How it works', href: '/demo' },
   { name: 'FAQ', href: '/faq' },
   { name: 'About us', href: '/about' },
 ];
 
-export default function Navigation() {
+export default function Navigation({
+  background = 'bg-transparent',
+  displayOnlyHome = false,
+}) {
   return (
     <>
       <Popover as="header" className="relative">
-        <div className="bg-gray-900 pt-6">
+        <div className={`${background} pt-6 relative isolate border-none`}>
+        {/* <Gradient /> */}
           <nav
             className="relative mx-auto flex max-w-7xl items-center justify-between px-6"
             aria-label="Global"
@@ -39,26 +43,30 @@ export default function Navigation() {
                   </Popover.Button>
                 </div>
               </div>
-              <div className="hidden space-x-8 md:ml-14 lg:ml-14 xl:ml-14 md:flex">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className="text-base font-medium text-white hover:text-gray-300"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+              {!displayOnlyHome && (
+                <div className="hidden space-x-8 md:ml-14 lg:ml-14 xl:ml-14 md:flex">
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className="text-base font-medium text-white hover:text-gray-300"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+            {!displayOnlyHome && (
+              <div className="hidden md:flex md:items-center md:space-x-6">
+                <Link
+                  to="/login"
+                  className="text-base font-medium text-white hover:text-gray-300"
+                >
+                  Log in
+                </Link>
               </div>
-            </div>
-            <div className="hidden md:flex md:items-center md:space-x-6">
-              <Link
-                to="/login"
-                className="text-base font-medium text-white hover:text-gray-300"
-              >
-                Log in
-              </Link>
-            </div>
+            )}
           </nav>
         </div>
 
