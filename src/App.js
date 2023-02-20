@@ -4,6 +4,7 @@ import Demo from './components/Demo';
 import FAQ from './components/FAQ';
 import Home from './components/Home';
 import Login from './components/Login';
+import { Toaster } from 'react-hot-toast';
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/demo" element={<Demo />} />
       </Routes>
+      <Toaster position="top-right" />
     </>
   );
 }

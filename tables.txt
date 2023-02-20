@@ -1,0 +1,49 @@
+Company
+Employees
+Users -> Users register and then create company. 
+Products
+Order
+
+
+
+Product Table
+
+Product ID
+Product Name
+Product Description
+Price
+Quantity
+Order Table
+
+Order ID
+Customer ID
+Date
+Total Cost
+Payment Method
+Order Details Table
+
+Order ID
+Product ID
+Quantity
+Price
+Total Cost
+Customer Table
+
+Customer ID
+First Name
+Last Name
+Email
+Phone Number
+Inventory Table
+
+Product ID
+Quantity in Stock
+Reorder Point
+Reorder Quantity
+User Table
+
+User ID
+Username
+Password
+Email
+Role
