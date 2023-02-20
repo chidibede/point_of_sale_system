@@ -2,19 +2,28 @@ import LoadingSpinner from '../icons/LoadingSpinner';
 import { useEffect, useState } from 'react';
 import Navigation from '../nav/Navigation';
 import Gradient from './Gradient';
-import { signInWithEmail } from '../server/controllers/auth';
+import { registerWithEmail } from '../server/controllers/auth';
 import classNames from '../utils/classNames';
 import { toast } from 'react-hot-toast';
 import CustomNotification from './CustomNotifications';
-import { Link, useNavigate } from 'react-router-dom';
-import storage from '../utils/storage';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function Register() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
   const [disableButton, setDisableButton] = useState(true);
+  const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location) {
+      if (location.state) {
+        setEmail(location.state.email);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (email === '' && password === '') {
@@ -32,11 +41,15 @@ export default function Login() {
     setEmail(target.value);
   };
 
-  const handleLogin = async (e) => {
+  const handlePhoneChange = ({ target }) => {
+    setPhone(target.value);
+  };
+
+  const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const { data, error } = await signInWithEmail(email, password);
-    const { user, session } = data;
+    const { data, error } = await registerWithEmail(email, password, phone);
+    console.log(data);
     if (error) {
       setLoading(false);
       toast.custom(
@@ -51,12 +64,19 @@ export default function Login() {
       );
     }
 
-    if (user) {
-      setLoading(false);
-      storage.session.set("auth", session)
-      navigate('/profile');
-    }
+    setLoading(false);
+    toast.custom(
+      (t) => (
+        <CustomNotification
+          toastOptions={t}
+          message={'Confirmation email sent, Please confirm your email'}
+          status="success"
+        />
+      ),
+      { duration: 1000 }
+    );
 
+    navigate('/login');
     return data;
   };
 
@@ -73,22 +93,22 @@ export default function Login() {
               alt="Your Company"
             />
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
-              Sign in to your account
+              Register and Start your trial
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
               Or{' '}
               <Link
-                to="/register"
+                to="/login"
                 className="font-medium text-white hover:text-indigo-500"
               >
-                start your 14-day free trial
+                Sign in
               </Link>
             </p>
           </div>
 
           <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-              <div>
+              <div className="mb-4">
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700"
@@ -100,6 +120,7 @@ export default function Login() {
                     id="email"
                     name="email"
                     type="email"
+                    value={email}
                     autoComplete="email"
                     onChange={handleEmailChange}
                     required
@@ -107,8 +128,27 @@ export default function Login() {
                   />
                 </div>
               </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Phone Number
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="text"
+                    autoComplete="email"
+                    onChange={handlePhoneChange}
+                    required
+                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
 
-              <div>
+              <div className="mb-8">
                 <label
                   htmlFor="password"
                   className="block text-sm font-medium text-gray-700"
@@ -128,36 +168,10 @@ export default function Login() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between mt-2 mb-8">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-2 block text-sm text-gray-900"
-                  >
-                    Remember me
-                  </label>
-                </div>
-
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-              </div>
-
-              <div>
+              <div className="mb-2">
                 <button
                   type="button"
-                  onClick={handleLogin}
+                  onClick={handleSignUp}
                   disabled={disableButton}
                   className={classNames(
                     disableButton ? 'cursor-not-allowed' : 'cursor-pointer',
@@ -165,9 +179,9 @@ export default function Login() {
                   )}
                 >
                   {loading ? (
-                    <LoadingSpinner loadingText="signing in" />
+                    <LoadingSpinner loadingText="Registering" />
                   ) : (
-                    'Sign in'
+                    'Sign up'
                   )}
                 </button>
               </div>
@@ -190,7 +204,7 @@ export default function Login() {
                       href="#"
                       className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                     >
-                      <span className="sr-only">Sign in with Facebook</span>
+                      <span className="sr-only">Sign up with Facebook</span>
                       <svg
                         className="h-5 w-5"
                         aria-hidden="true"
@@ -211,7 +225,7 @@ export default function Login() {
                       href="#"
                       className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                     >
-                      <span className="sr-only">Sign in with Twitter</span>
+                      <span className="sr-only">Sign up with Twitter</span>
                       <svg
                         className="h-5 w-5"
                         aria-hidden="true"

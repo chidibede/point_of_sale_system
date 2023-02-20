@@ -1,8 +1,20 @@
 import Navigation from '../nav/Navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import Gradient from './Gradient';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState();
+
+  const handleEmailChange = ({ target }) => {
+    setEmail(target.value);
+  };
+
+  const handleStartFreeTrial = () => {
+    navigate('/register', { state: { email } });
+  };
+
   return (
     <>
       <main>
@@ -28,37 +40,37 @@ const Home = () => {
                     that simplifies your retail operations.
                   </p>
                   <div className="mt-10 sm:mt-12">
-                    <form action="#" className="sm:mx-auto sm:max-w-xl lg:mx-0">
-                      <div className="sm:flex">
-                        <div className="min-w-0 flex-1">
-                          <label htmlFor="email" className="sr-only">
-                            Email address
-                          </label>
-                          <input
-                            id="email"
-                            type="email"
-                            placeholder="Enter your email"
-                            className="block w-full rounded-md border-0 px-4 py-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                          />
-                        </div>
-                        <div className="mt-3 sm:mt-0 sm:ml-3">
-                          <button
-                            type="submit"
-                            className="block w-full rounded-md bg-gradient-to-r from-teal-500 to-cyan-600 py-3 px-4 font-medium text-white shadow hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                          >
-                            Start free trial
-                          </button>
-                        </div>
+                    <div className="sm:flex">
+                      <div className="min-w-0 flex-1">
+                        <label htmlFor="email" className="sr-only">
+                          Email address
+                        </label>
+                        <input
+                          id="email"
+                          type="email"
+                          onChange={handleEmailChange}
+                          placeholder="Enter your email"
+                          className="block w-full rounded-md border-0 px-4 py-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                        />
                       </div>
-                      <p className="mt-3 text-sm text-gray-300 sm:mt-4">
-                        Start your free 14-day trial, no credit card necessary.
-                        By providing your email, you agree to our{' '}
-                        <a href="#" className="font-medium text-white">
-                          terms of service
-                        </a>
-                        .
-                      </p>
-                    </form>
+                      <div className="mt-3 sm:mt-0 sm:ml-3">
+                        <button
+                          type="button"
+                          onClick={handleStartFreeTrial}
+                          className="block w-full rounded-md bg-gradient-to-r from-teal-500 to-cyan-600 py-3 px-4 font-medium text-white shadow hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                        >
+                          Start free trial
+                        </button>
+                      </div>
+                    </div>
+                    <p className="mt-3 text-sm text-gray-300 sm:mt-4">
+                      Start your free 14-day trial, no credit card necessary. By
+                      providing your email, you agree to our{' '}
+                      <a href="#" className="font-medium text-white">
+                        terms of service
+                      </a>
+                      .
+                    </p>
                   </div>
                 </div>
               </div>

@@ -5,7 +5,10 @@ import FAQ from './components/FAQ';
 import Home from './components/Home';
 import Login from './components/Login';
 import { Toaster } from 'react-hot-toast';
-
+import Register from './components/Register';
+import Profile from './components/Profile';
+import { useEffect, useState } from 'react';
+import supabase from './server/supabase';
 
 export default function App() {
   return (
@@ -15,7 +18,9 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/demo" element={<Demo />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <Toaster position="top-right" />
     </>
