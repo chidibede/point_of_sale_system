@@ -7,8 +7,7 @@ import Login from './components/Login';
 import { Toaster } from 'react-hot-toast';
 import Register from './components/Register';
 import Profile from './components/Profile';
-import { useEffect, useState } from 'react';
-import supabase from './server/supabase';
+import Dashboard from './components/Dashboard';
 
 export default function App() {
   return (
@@ -21,6 +20,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Toaster position="top-right" />
     </>

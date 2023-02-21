@@ -1,24 +1,55 @@
-import Gradient from '../components/Gradient';
 import { Popover, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import storage from '../utils/storage';
+import { signOut } from '../server/controllers/auth';
+import ProfileDropDown from '../components/ProfileDropDown';
 
-const navigation = [
+const unauthenticatedNavigation = [
   { name: 'How it works', href: '/demo' },
   { name: 'FAQ', href: '/faq' },
   { name: 'About us', href: '/about' },
+];
+
+const authenticatedNavigation = [
+  { name: 'Dashboard', href: '/dashboard' },
+  { name: 'Inventory', href: '/inventory' },
+  { name: 'Point of Sale', href: '/pos' },
+];
+
+const userNavigation = [
+  { name: 'Your Profile', href: '/profile' },
+  { name: 'Settings', href: '/settings' },
+  { name: 'Log out', href: '#' },
 ];
 
 export default function Navigation({
   background = 'bg-transparent',
   displayOnlyHome = false,
 }) {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userSession = storage.session.get('auth');
+    if (userSession) {
+      setUser(userSession.user);
+    }
+  }, [user]);
+
+  const logoutUser = async () => {
+    await signOut();
+    storage.session.delete('auth');
+    setUser(null);
+    navigate('/');
+  };
+
   return (
     <>
       <Popover as="header" className="relative">
         <div className={`${background} pt-6 relative isolate border-none`}>
-        {/* <Gradient /> */}
+          {/* <Gradient /> */}
           <nav
             className="relative mx-auto flex max-w-7xl items-center justify-between px-6"
             aria-label="Global"
@@ -44,28 +75,52 @@ export default function Navigation({
                 </div>
               </div>
               {!displayOnlyHome && (
-                <div className="hidden space-x-8 md:ml-14 lg:ml-14 xl:ml-14 md:flex">
-                  {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      className="text-base font-medium text-white hover:text-gray-300"
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
+                <>
+                  {user ? (
+                    <div className="hidden space-x-8 md:ml-14 lg:ml-14 xl:ml-14 md:flex">
+                      {authenticatedNavigation.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className="text-base font-medium text-white hover:text-gray-300"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="hidden space-x-8 md:ml-14 lg:ml-14 xl:ml-14 md:flex">
+                      {unauthenticatedNavigation.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className="text-base font-medium text-white hover:text-gray-300"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
             </div>
             {!displayOnlyHome && (
-              <div className="hidden md:flex md:items-center md:space-x-6">
-                <Link
-                  to="/login"
-                  className="text-base font-medium text-white hover:text-gray-300"
-                >
-                  Log in
-                </Link>
-              </div>
+              <>
+                {user ? (
+                  <div className="hidden md:flex md:items-center md:space-x-6">
+                    <ProfileDropDown userNavigation={userNavigation} logout={async () => await logoutUser()} />
+                  </div>
+                ) : (
+                  <div className="hidden md:flex md:items-center md:space-x-6">
+                    <Link
+                      to="/login"
+                      className="text-base font-medium text-white hover:text-gray-300"
+                    >
+                      Log in
+                    </Link>
+                  </div>
+                )}
+              </>
             )}
           </nav>
         </div>
@@ -100,32 +155,49 @@ export default function Navigation({
                 </div>
               </div>
               <div className="pt-5 pb-6">
-                <div className="space-y-1 px-2">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50"
+                {user ? (
+                  <div className="space-y-1 px-2">
+                    {authenticatedNavigation.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50"
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="space-y-1 px-2">
+                    {unauthenticatedNavigation.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50"
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+                  </div>
+                )}
+                <div className="mt-6 px-5">
+                  {user ? (
+                    <button
+                      onClick={async () => {
+                        await logoutUser();
+                      }}
+                      className="block w-full rounded-md bg-gradient-to-r from-teal-500 to-cyan-600 py-3 px-4 text-center font-medium text-white shadow hover:from-teal-600 hover:to-cyan-700"
                     >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-                <div className="mt-6 px-5">
-                  <a
-                    href="/"
-                    className="block w-full rounded-md bg-gradient-to-r from-teal-500 to-cyan-600 py-3 px-4 text-center font-medium text-white shadow hover:from-teal-600 hover:to-cyan-700"
-                  >
-                    Start free trial
-                  </a>
-                </div>
-                <div className="mt-6 px-5">
-                  <p className="text-center text-base font-medium text-gray-500">
-                    Existing customer?{' '}
-                    <a href="/login" className="text-gray-900 hover:underline">
+                      Log out
+                    </button>
+                  ) : (
+                    <Link
+                      to="/login"
+                      className="block w-full rounded-md bg-gradient-to-r from-teal-500 to-cyan-600 py-3 px-4 text-center font-medium text-white shadow hover:from-teal-600 hover:to-cyan-700"
+                    >
                       Login
-                    </a>
-                  </p>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

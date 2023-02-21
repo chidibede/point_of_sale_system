@@ -11,7 +11,7 @@ export default function ProtectedRoute({ children }) {
     if (!session) {
       navigate('/login');
     }
-  }, []);
+  }, [session]);
 
 
   return <div>{session ? <div>{ children }</div> : <Login />}</div>;

@@ -1,28 +1,17 @@
-import supabase from '../server/supabase';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Login from './Login';
+import React from 'react';
 import ProtectedRoute from './ProtectedRoute';
+import Navigation from '../nav/Navigation';
+import Gradient from './Gradient';
+import Avatar from '../icons/Avatar';
 
 export default function Profile() {
-  
-  
-
   return (
     <ProtectedRoute>
       <main className="profile-page">
         <section className="relative block" style={{ height: '500px' }}>
-          <div
-            className="absolute top-0 w-full h-full bg-center bg-cover"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2710&q=80')",
-            }}
-          >
-            <span
-              id="blackOverlay"
-              className="w-full h-full absolute opacity-50 bg-black"
-            ></span>
+          <div className="relative isolate top-0 w-full h-full bg-gray-900">
+            <Gradient />
+            <Navigation />
           </div>
           <div
             className="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
@@ -51,24 +40,17 @@ export default function Profile() {
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                     <div className="relative">
-                      <img
-                        alt="..."
-                        src={
-                          require('../assets/img/team-2-800x800.jpeg').default
-                        }
-                        className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16"
-                        style={{ maxWidth: '150px' }}
-                      />
+                      <Avatar />
                     </div>
                   </div>
-                  <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
+                  <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right">
                     <div className="py-6 px-3 mt-32 sm:mt-0">
                       <button
                         className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
                         type="button"
                         style={{ transition: 'all .15s ease' }}
                       >
-                        Connect
+                        Edit Profile
                       </button>
                     </div>
                   </div>
@@ -97,7 +79,7 @@ export default function Profile() {
                 </div>
                 <div className="text-center mt-12">
                   <h3 className="text-4xl font-semibold leading-normal mb-2 text-gray-800 mb-2">
-                    Jenna Stones
+                    John Stones
                   </h3>
                   <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
                     <i className="fas fa-map-marker-alt mr-2 text-lg text-gray-500"></i>{' '}
@@ -105,7 +87,7 @@ export default function Profile() {
                   </div>
                   <div className="mb-2 text-gray-700 mt-10">
                     <i className="fas fa-briefcase mr-2 text-lg text-gray-500"></i>
-                    Solution Manager - Creative Tim Officer
+                    Solution Manager - Nextrend
                   </div>
                   <div className="mb-2 text-gray-700">
                     <i className="fas fa-university mr-2 text-lg text-gray-500"></i>
